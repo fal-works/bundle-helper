@@ -4,9 +4,14 @@ import { seq, cmdEx, cmd } from "@fal-works/s-l-t-r";
 import { Command } from "@fal-works/s-l-t-r/types/command/types";
 
 /**
- * Inserts empty lines before block comments.
+ * Returns `Command` that inserts empty lines before block comments.
+ *
  * Workaround for:
  * https://github.com/typescript-eslint/typescript-eslint/issues/1150
+ *
+ * Needs following libraries to be installed:
+ * - @fal-works/mere-file-transformer
+ * - replacestream
  */
 const preFormat = (filesPattern: string): Command => {
   const lineBeforeBlockComment = () =>
@@ -17,13 +22,13 @@ const preFormat = (filesPattern: string): Command => {
   return cmdEx(() => preFormatFiles(filesPattern), `pre-format`);
 };
 
-/** Runs prettier. */
+/** @returns `Command` that runs prettier. */
 const prettier = (
   filesPattern: string,
   prettierOptions = "--write --loglevel warn"
 ): Command => cmd("prettier", prettierOptions, `"${filesPattern}"`);
 
-/** Applies both `preFormat()` and `prettier()`. */
+/** @returns `Command` that applies both `preFormat()` and `prettier()`. */
 const format = (filesPattern: string): Command =>
   seq(preFormat(filesPattern), prettier(filesPattern)).rename(
     `format ${filesPattern}`

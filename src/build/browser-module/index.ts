@@ -7,6 +7,7 @@ import * as rollup from "../../use/rollup";
 import { format } from "../../use/format";
 import * as terser from "../../use/terser";
 
+/** Config fields required by `command()`. */
 export interface Config extends ts.TscConfig, rollup.RollupConfig {
   typesDir?: string;
 }
@@ -20,6 +21,16 @@ const formatLibCommand = (config: Config) => (
 
 const { cleandir } = builtin;
 
+/**
+ * Returns `Command` that does everything for building a module for browsers.
+ * Needs following libraries to be installed:
+ * - typescript
+ * - rollup
+ * - prettier
+ * - terser
+ * - @fal-works/mere-file-transformer
+ * - replacestream
+ */
 export const command = (config: Config): types.Command => {
   const { typesDir, tsOutDir, distDir } = config;
 

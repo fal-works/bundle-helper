@@ -20,6 +20,7 @@ const getRollupFormat = (distType: DistType) => {
   return format;
 };
 
+/** Config fields required by `commandFromConfig()`. */
 export interface RollupConfig extends DistConfig {
   srcEntryFileName: string;
   tsOutDir: string;
@@ -36,6 +37,7 @@ interface Options {
   outputOptions: rollupApi.OutputOptions;
 }
 
+/** @returns Options to be passed to `execute()` or `command()` */
 export const convertConfig = (
   config: RollupConfig,
   distType: DistType
@@ -66,6 +68,7 @@ export const convertConfig = (
   };
 };
 
+/** Immediately runs rollup. */
 export async function execute(
   inputOptions: rollupApi.InputOptions,
   outputOptions: rollupApi.OutputOptions
@@ -77,6 +80,7 @@ export async function execute(
   generator.close();
 }
 
+/** @returns Command object that runs rollup. */
 export const command = (
   inputOptions: rollupApi.InputOptions,
   outputOptions: rollupApi.OutputOptions

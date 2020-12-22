@@ -5,9 +5,11 @@ import { DistConfig } from "../distribution";
 
 const returnVoid = () => {};
 
+/** @returns `Command` that runs esbuild. */
 export const command = (options: esbuildApi.BuildOptions): types.Command =>
   cmdEx(() => esbuildApi.build(options).then(returnVoid), `esbuild`);
 
+/** @returns Options to be passed to `commandFromConfigMinify()`. */
 export const convertConfigMinify = (config: DistConfig) => (
   distType: BrowserDistType
 ): esbuildApi.BuildOptions => {
@@ -20,6 +22,7 @@ export const convertConfigMinify = (config: DistConfig) => (
   };
 };
 
+/** @returns `Command` that runs esbuild for minifying purpose. */
 export const commandFromConfigMinify = (config: DistConfig) => (
   distType: BrowserDistType
 ): types.Command => {
