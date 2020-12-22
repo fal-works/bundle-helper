@@ -1,3 +1,14 @@
+/**
+ * bundle-helper
+ * Helps bundle using s-l-t-r.
+ * https://fal-works.github.io/bundle-helper/
+ * @copyright 2020 FAL
+ * @license MIT
+ * @version 0.1.0
+ */
+
+"use strict";
+
 const log = (s: string) => console.log(s);
 
 console.group("\n[bundle-helper]");
