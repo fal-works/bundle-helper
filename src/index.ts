@@ -1,0 +1,11 @@
+const log = (s: string) => console.log(s);
+
+console.group("\n[bundle-helper]");
+log("You have to individually require each module you want to use.");
+log("For example:");
+console.group();
+log('  const minifier = require("@fal-works/bundle-helper/lib/use/terser");');
+log('  const minify = minifier.command("src.js", "dest.js");');
+console.groupEnd();
+log("");
+console.groupEnd();

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./types",
+    "target": "esnext",
+    "module": "CommonJS",
+    "noEmitOnError": true,
+    "outDir": "./lib",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "newLine": "LF",
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}
