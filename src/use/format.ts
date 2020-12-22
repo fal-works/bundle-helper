@@ -30,8 +30,8 @@ const prettier = (
 
 /** @returns `Command` that applies both `preFormat()` and `prettier()`. */
 const format = (filesPattern: string): Command =>
-  seq(preFormat(filesPattern), prettier(filesPattern)).rename(
-    `format ${filesPattern}`
-  );
+  seq(preFormat(filesPattern), prettier(filesPattern))
+    .rename(`format ${filesPattern}`)
+    .collapse();
 
 export { preFormat, prettier, format };
