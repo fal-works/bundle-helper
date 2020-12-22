@@ -32,30 +32,29 @@ const { cleandir } = builtin;
  * - replacestream
  */
 export const command = (config: Config): types.Command => {
+  const { Iife, Esm } = BrowserDistType;
   const { typesDir, tsOutDir, distDir } = config;
 
   const cleanBeforeTsc = typesDir
-    ? par(cleandir(tsOutDir), cleandir(typesDir))
+    ? par(cleandir(tsOutDir), cleandir(typesDir)).collapse()
     : cleandir(tsOutDir);
   const tsc = ts.command(config);
-  const transpile = seq(cleanBeforeTsc, tsc);
+  const transpileName = typesDir ? "ts -> js & d.ts" : "ts -> js";
+  const transpile = seq(cleanBeforeTsc, tsc).rename(transpileName).collapse();
 
   const bundle = rollup.commandFromConfig(config);
   const formatLib = formatLibCommand(config);
-  const bundleAndFormat = (distType: BrowserDistType) =>
-    seq(bundle(distType), formatLib(distType));
-
   const minify = terser.commandFromConfig(config);
 
-  const lib = seq(
-    cleandir(distDir),
-    par(
-      seq(bundleAndFormat(BrowserDistType.Iife), minify(BrowserDistType.Iife)),
-      bundleAndFormat(BrowserDistType.Esm)
-    )
+  const createLib = par(
+    seq(bundle(Iife), formatLib(Iife), minify(Iife)).rename("iife"),
+    seq(bundle(Esm), formatLib(Esm)).rename("esm")
   );
+  const lib = seq(cleandir(distDir), createLib).rename("lib").collapse();
 
-  const libAndTypes = typesDir ? par(lib, format(typesDir)) : lib;
+  const libAndTypes = typesDir
+    ? par(format(`${typesDir}/**/*.d.ts`), lib)
+    : lib;
 
-  return seq(transpile, libAndTypes);
+  return seq(transpile, libAndTypes).hide();
 };
