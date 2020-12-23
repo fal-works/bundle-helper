@@ -59,4 +59,10 @@ In addition, each feature requires different modules, which you may have to inst
   - terser/
     - terser
   - typescript/
-    - typescript
+    - tsc/
+      - typescript
+    - transpile-only/
+      - typescript
+    - transpile-only-all/
+      - typescript
+      - fast-glob
