@@ -13,7 +13,7 @@ import { Command } from "@fal-works/s-l-t-r/types/command/types";
  * - @fal-works/mere-file-transformer
  * - replacestream
  */
-const preFormat = (filesPattern: string): Command => {
+export const preFormatCommand = (filesPattern: string): Command => {
   const lineBeforeBlockComment = () =>
     replaceStream(/(.)(\n *\/\*\*)/gm, "$1\n$2");
 
@@ -23,15 +23,13 @@ const preFormat = (filesPattern: string): Command => {
 };
 
 /** @returns `Command` that runs prettier. */
-const prettier = (
+export const prettierCommand = (
   filesPattern: string,
   prettierOptions = "--write --loglevel warn"
 ): Command => cmd("prettier", prettierOptions, `"${filesPattern}"`);
 
 /** @returns `Command` that applies both `preFormat()` and `prettier()`. */
-const format = (filesPattern: string): Command =>
-  seq(preFormat(filesPattern), prettier(filesPattern))
+export const command = (filesPattern: string): Command =>
+  seq(preFormatCommand(filesPattern), prettierCommand(filesPattern))
     .rename(`format ${filesPattern}`)
     .collapse();
-
-export { preFormat, prettier, format };

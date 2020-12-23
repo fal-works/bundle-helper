@@ -4,7 +4,7 @@ import { getDistFilePath, BrowserDistType } from "../../distribution";
 
 import * as ts from "../../use/typescript";
 import * as rollup from "../../use/rollup";
-import { format } from "../../use/format";
+import * as format from "../../use/format";
 import * as terser from "../../use/terser";
 
 /** Config fields required by `command()`. */
@@ -16,7 +16,7 @@ const formatLibCommand = (config: Config) => (
   distType: BrowserDistType
 ): types.Command => {
   const path = getDistFilePath(config, distType);
-  return format(path);
+  return format.command(path);
 };
 
 const { cleandir } = builtin;
@@ -53,7 +53,7 @@ export const command = (config: Config): types.Command => {
   const lib = seq(cleandir(distDir), createLib).rename("lib").collapse();
 
   const libAndTypes = typesDir
-    ? par(format(`${typesDir}/**/*.d.ts`), lib)
+    ? par(format.command(`${typesDir}/**/*.d.ts`), lib)
     : lib;
 
   return seq(transpile, libAndTypes).hide();
