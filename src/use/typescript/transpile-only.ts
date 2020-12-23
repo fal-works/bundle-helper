@@ -3,7 +3,6 @@ import fs = require("fs");
 import ts = require("typescript");
 import { DistType } from "../../common";
 import { convertConfig, TsConfig } from "./options";
-import { ExecuteFunction, CommandFunction } from "./internal-types";
 
 const sliceAfterLast = (s: string, delimiter: string): string =>
   s.slice(s.lastIndexOf(delimiter) + 1);
@@ -47,6 +46,11 @@ export const execute = (
 ): Promise<void> =>
   createExecute(srcFilePath, distFilePath, transpileOptions)();
 
+export type ExecuteFunction = (
+  srcFilePath: string,
+  distFilePath: string
+) => Promise<void>;
+
 /** Prepares `ts.transpileModule()` using `config`. */
 export const executeFromConfig = (config: TsConfig) => (
   distType: DistType
@@ -66,6 +70,11 @@ export const command = (
     createExecute(srcFilePath, distFilePath, transpileOptions),
     `ts.transpile ${srcFilePath}`
   );
+
+export type CommandFunction = (
+  srcFilePath: string,
+  distFilePath: string
+) => types.Command;
 
 /** Prepares `Command` that runs `ts.transpileModule()` using `config`. */
 export const commandFromConfig = (config: TsConfig) => (

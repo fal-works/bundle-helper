@@ -5,7 +5,6 @@ import glob = require("../glob");
 
 import { convertConfig, TsConfig } from "./options";
 import transpile = require("./transpile-only");
-import { ExecuteFunction, CommandFunction } from "./internal-types";
 
 const createTranspileFile = (
   srcDir: string,
@@ -33,6 +32,11 @@ export const execute = (
   tsOptions: ts.TranspileOptions
 ): Promise<void> => createExecute(srcDir, distDir, tsOptions)();
 
+export type ExecuteFunction = (
+  srcDirPath: string,
+  distDirPath: string
+) => Promise<void>;
+
 /** Prepares `execute()` using `config`. */
 export const executeFromConfig = (config: TsConfig) => (
   distType: DistType
@@ -48,6 +52,11 @@ export const command = (
   tsOptions: ts.TranspileOptions
 ): types.Command =>
   cmdEx(createExecute(srcDir, distDir, tsOptions), `ts.transpile ${srcDir}`);
+
+export type CommandFunction = (
+  srcDirPath: string,
+  distDirPath: string
+) => types.Command;
 
 /** Prepares `execute()` using `config`. */
 export const commandFromConfig = (config: TsConfig) => (
