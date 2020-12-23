@@ -61,9 +61,10 @@ export const command = (config: Config): types.Command => {
   );
   const lib = seq(cleandir(distDir), createLib).rename("lib").collapse();
 
-  const libAndTypes = typesDir
-    ? par(format.command(`${typesDir}/**/*.d.ts`), lib)
-    : lib;
+  const libAndTypes =
+    typesDir && config.format !== false
+      ? par(format.command(`${typesDir}/**/*.d.ts`), lib)
+      : lib;
 
   return seq(transpile, libAndTypes).hide();
 };
