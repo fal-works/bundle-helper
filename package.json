@@ -1,7 +1,7 @@
 {
   "name": "@fal-works/bundle-helper",
   "description": "Helps bundle using s-l-t-r.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "FAL",
   "bugs": {
     "url": "https://github.com/fal-works/bundle-helper/issues"
