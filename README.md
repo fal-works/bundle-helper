@@ -35,11 +35,24 @@ const build = builder.command({
 In addition, each feature requires different modules, which you may have to install manually:
 
 - build/
-  - for-browsers/
+  - browser-app/
     - typescript
     - rollup
     - prettier
+    - @fal-works/mere-file-transformer
+    - replacestream
     - terser
+    - fast-glob
+  - browser-module/
+    - typescript
+    - rollup
+    - prettier
+    - @fal-works/mere-file-transformer
+    - replacestream
+    - terser
+  - node-module/
+    - typescript
+    - prettier
     - @fal-works/mere-file-transformer
     - replacestream
 - use/
