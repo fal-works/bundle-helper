@@ -30,15 +30,15 @@ const createExecuteTranspile = (
 };
 
 /** Immediately runs `ts.transpileModule()`. */
-export const TscTranspile = (
+export const execute = (
   srcFilePath: string,
   distFilePath: string,
   transpileOptions: ts.TranspileOptions
 ): Promise<void> =>
   createExecuteTranspile(srcFilePath, distFilePath, transpileOptions)();
 
-/** Immediately runs `ts.transpileModule()`. */
-export const transpileCommand = (
+/** @returns `Command` that runs `ts.transpileModule()`. */
+export const command = (
   srcFilePath: string,
   distFilePath: string,
   transpileOptions: ts.TranspileOptions
