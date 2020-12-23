@@ -22,7 +22,8 @@ const createExecute = (
   tsOptions: ts.TranspileOptions
 ) => {
   const transpileFile = createTranspileFile(srcDir, distDir, tsOptions);
-  return () => glob.execute(transpileFile)(`${srcDir}/**/*.{ts,tsx}}`);
+  const pattern = `${srcDir}/**/*.{ts,tsx}`;
+  return () => glob.execute(transpileFile, { onlyFiles: true })(pattern);
 };
 
 /** Immediately runs `ts.transpileModule()` for each source file. */
