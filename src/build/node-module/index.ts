@@ -8,6 +8,7 @@ import format = require("../../use/format");
 /** Config fields required by `command()`. */
 export interface Config extends BundleDistConfig, tsc.TscConfig {
   typesDir?: string;
+  format?: boolean;
 }
 
 const { cleandir } = builtin;
@@ -25,15 +26,19 @@ export const command = (config: Config): types.Command => {
 
   const runTsc = tsc.command(config);
 
-  const formatLib = format.command(`${distDir}/**/*.js`);
+  const all: types.Command[] = [cleanAll, runTsc];
 
-  const formatAll = typesDir
-    ? par(formatLib, format.command(`${typesDir}/**/*.d.ts`))
-        .rename("format js & d.ts")
-        .collapse()
-    : formatLib;
+  if (config.format !== false) {
+    const formatLib = format.command(`${distDir}/**/*.js`);
+    const formatAll = typesDir
+      ? par(formatLib, format.command(`${typesDir}/**/*.d.ts`))
+          .rename("format js & d.ts")
+          .collapse()
+      : formatLib;
+    all.push(formatAll);
+  }
 
-  return seq(cleanAll, runTsc, formatAll).hide();
+  return seq(...all).hide();
 };
 
 /**

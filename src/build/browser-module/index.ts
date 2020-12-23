@@ -6,6 +6,7 @@ import tsc = require("../../use/typescript/tsc");
 import rollup = require("../../use/rollup");
 import format = require("../../use/format");
 import terser = require("../../use/terser");
+import { Command } from "@fal-works/s-l-t-r/types/command/types";
 
 /** Config fields required by `command()`. */
 export interface Config
@@ -13,6 +14,8 @@ export interface Config
     rollup.RollupConfig,
     terser.TerserConfig {
   typesDir?: string;
+  format?: boolean;
+  minify?: boolean;
 }
 
 const formatLibCommand = (config: Config) => (
@@ -42,9 +45,19 @@ export const command = (config: Config): types.Command => {
   const formatLib = formatLibCommand(config);
   const minify = terser.commandFromConfig(config);
 
+  const createIife: Command[] = [bundle(Iife)];
+  const createEsm: Command[] = [bundle(Esm)];
+  if (config.format !== false) {
+    createIife.push(formatLib(Iife));
+    createEsm.push(formatLib(Esm));
+  }
+  if (config.minify !== false) {
+    createIife.push(minify(Iife));
+  }
+
   const createLib = par(
-    seq(bundle(Iife), formatLib(Iife), minify(Iife)).rename("iife"),
-    seq(bundle(Esm), formatLib(Esm)).rename("esm")
+    seq(...createIife).rename("iife"),
+    seq(...createIife).rename("esm")
   );
   const lib = seq(cleandir(distDir), createLib).rename("lib").collapse();
 
