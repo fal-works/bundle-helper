@@ -56,7 +56,8 @@
     "clean": "rimraf lib/* & rimraf types/*",
     "format": "yarn format:lib & yarn format:types",
     "format:lib": "eslint --fix lib/**/*.js",
-    "format:types": "eslint --fix types/**/*.d.ts"
+    "format:types": "eslint --fix types/**/*.d.ts",
+    "dogfood": "node test/dogfooding.js"
   },
   "types": "types/index.d.ts"
 }
