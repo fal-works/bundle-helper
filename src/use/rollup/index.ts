@@ -8,6 +8,7 @@ import {
   getDistFilePath,
   BundleConfig,
   MiscConfig,
+  createBanners,
 } from "../../common";
 
 const createPlugins = () => [nodeResolve()];
@@ -61,12 +62,16 @@ export const convertConfig = (
     overrides.input
   );
 
+  const banner = config.bannerContent
+    ? createBanners(config.bannerContent)
+    : undefined;
+
   const baseOutputOptions: rollupApi.OutputOptions = {
     file: getDistFilePath(config, distType),
     format: getRollupFormat(distType),
     name: config.iifeVarName,
     sourcemap: config.sourceMap,
-    banner: config.banner,
+    banner,
     interop: allowUnsafe ? "default" : undefined,
   };
   const outputOptions: rollupApi.OutputOptions = Object.assign(

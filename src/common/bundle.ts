@@ -18,7 +18,7 @@ export interface BundleDistConfig extends DistConfig {
  */
 export interface BundleConfig extends BundleDistConfig {
   iifeVarName?: string;
-  banner?: string;
+  bannerContent?: string | string[];
   external?: string[];
 }
 
@@ -45,4 +45,23 @@ export const getDistFilePaths = (
   const minFilePath = `${distDir}/${bundleDistName}.min${extension}`;
 
   return { distFilePath, minFilePath };
+};
+
+/** Wraps `content` with a JSDoc-style multiline comment. */
+export const createBanner = (content: string): string => {
+  if (!content.startsWith("\n") || !content.endsWith("\n"))
+    throw "bannerContent must start and end with a newline.";
+
+  let lines = content.slice(1, content.length - 1).split("\n");
+  lines = lines.map((line) => ` * ${line}`);
+  return `/**\n${lines.join("\n")}\n */\n`;
+};
+
+/**
+ * Wraps each of `contents` with JSDoc-style multiline comment and
+ * returns a joined string.
+ */
+export const createBanners = (contents: string | string[]): string => {
+  if (typeof contents === "string") contents = [contents];
+  return contents.map(createBanner).join("\n");
 };
