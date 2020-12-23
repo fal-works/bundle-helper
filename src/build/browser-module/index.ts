@@ -32,7 +32,7 @@ export const command = (config: Config): types.Command => {
   const cleanBeforeTsc = typesDir
     ? par(cleandir(tsOutDir), cleandir(typesDir)).collapse()
     : cleandir(tsOutDir);
-  const tsc = ts.command(config);
+  const tsc = ts.tscCommand(config);
   const transpileName = typesDir ? "ts -> js & d.ts" : "ts -> js";
   const transpile = seq(cleanBeforeTsc, tsc).rename(transpileName).collapse();
 

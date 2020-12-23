@@ -23,7 +23,7 @@ export const command = (config: Config): types.Command => {
     ? par(cleandir(distDir), cleandir(typesDir)).collapse().rename("clean")
     : cleandir(distDir);
 
-  const tsc = ts.command(config);
+  const tsc = ts.tscCommand(config);
 
   const formatLib = format.command(`${distDir}/**/*.js`);
 
