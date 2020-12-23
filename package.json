@@ -7,7 +7,7 @@
     "url": "https://github.com/fal-works/bundle-helper/issues"
   },
   "dependencies": {
-    "@fal-works/s-l-t-r": "^0.3.0"
+    "@fal-works/s-l-t-r": "^0.4.0"
   },
   "devDependencies": {
     "@fal-works/mere-file-transformer": "^0.1.1",
