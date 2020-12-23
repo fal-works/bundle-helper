@@ -3,7 +3,7 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 import { cmdEx, types } from "@fal-works/s-l-t-r";
 
-import { DistType, getDistFilePath, BundleConfig } from "../common";
+import { DistType, getDistFilePath, BundleConfig, MiscConfig } from "../common";
 
 const createPlugins = () => [nodeResolve()];
 
@@ -21,12 +21,11 @@ const getRollupFormat = (distType: DistType) => {
 };
 
 /** Config fields required by `commandFromConfig()`. */
-export interface RollupConfig extends BundleConfig {
+export interface RollupConfig extends BundleConfig, MiscConfig {
   srcEntryFileName: string;
   tsOutDir: string;
   iifeGlobals?: Record<string, string>;
   rollupPlugins?: rollupApi.Plugin[];
-  sourceMap?: boolean;
 }
 
 interface Options {
