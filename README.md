@@ -16,9 +16,9 @@ const minify = minifier.command("src.js", "dest.js"); // returns s-l-t-r command
 or:
 
 ```js
-const builder = require("@fal-works/bundle-helper/lib/build/for-browsers");
+const builder = require("@fal-works/bundle-helper/lib/build/browser-module");
 const build = builder.command({
-  distName: "cool-library",
+  bundleDistName: "cool-library",
   distDir: "lib",
   typesDir: "types",
   tsOutDir: "out",
@@ -29,6 +29,10 @@ const build = builder.command({
 
 
 ## Dependencies
+
+`@fal-works/s-l-t-r` is mandatory and is installed automatically.
+
+In addition, each feature requires different modules, which you may have to install manually:
 
 - build/
   - for-browsers/
@@ -48,6 +52,8 @@ const build = builder.command({
   - rollup/
     - rollup
     - @rollup/plugin-node-resolve
+  - swc/
+    - @swc/core
   - terser/
     - terser
   - typescript/
