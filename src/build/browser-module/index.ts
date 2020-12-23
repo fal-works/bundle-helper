@@ -57,7 +57,7 @@ export const command = (config: Config): types.Command => {
 
   const createLib = par(
     seq(...createIife).rename("iife"),
-    seq(...createIife).rename("esm")
+    seq(...createEsm).rename("esm")
   );
   const lib = seq(cleandir(distDir), createLib).rename("lib").collapse();
 
