@@ -1,7 +1,11 @@
 import { cmdEx, types } from "@fal-works/s-l-t-r";
 import ts = require("typescript");
-import * as glob from "../glob";
-import * as transpile from "./transpile-only";
+import { DistType } from "../../common";
+import glob = require("../glob");
+
+import { convertConfig, TsConfig } from "./options";
+import transpile = require("./transpile-only");
+import { ExecuteFunction, CommandFunction } from "./internal-types";
 
 const createTranspileFile = (
   srcDir: string,
@@ -28,6 +32,14 @@ export const execute = (
   tsOptions: ts.TranspileOptions
 ): Promise<void> => createExecute(srcDir, distDir, tsOptions)();
 
+/** Prepares `execute()` using `config`. */
+export const executeFromConfig = (config: TsConfig) => (
+  distType: DistType
+): ExecuteFunction => {
+  const compilerOptions = convertConfig(config, distType);
+  return (srcDir, distDir) => execute(srcDir, distDir, { compilerOptions });
+};
+
 /** Immediately runs `ts.transpileModule()` for each source file. */
 export const command = (
   srcDir: string,
@@ -35,3 +47,11 @@ export const command = (
   tsOptions: ts.TranspileOptions
 ): types.Command =>
   cmdEx(createExecute(srcDir, distDir, tsOptions), `ts.transpile ${srcDir}`);
+
+/** Prepares `execute()` using `config`. */
+export const commandFromConfig = (config: TsConfig) => (
+  distType: DistType
+): CommandFunction => {
+  const compilerOptions = convertConfig(config, distType);
+  return (srcDir, distDir) => command(srcDir, distDir, { compilerOptions });
+};

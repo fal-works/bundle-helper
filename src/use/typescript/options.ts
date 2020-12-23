@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts = require("typescript");
 import { DistType } from "../../common";
 
 export interface TsConfig {
