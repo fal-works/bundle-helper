@@ -23,13 +23,7 @@ const { cleandir } = builtin;
 
 /**
  * Returns `Command` that does everything for building a module for browsers.
- * Needs following libraries to be installed:
- * - typescript
- * - rollup
- * - prettier
- * - terser
- * - @fal-works/mere-file-transformer
- * - replacestream
+ * See README for required library dependencies.
  */
 export const command = (config: Config): types.Command => {
   const { Iife, Esm } = BrowserDistType;
