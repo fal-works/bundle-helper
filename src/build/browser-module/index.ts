@@ -1,4 +1,4 @@
-import { seq, par, types, builtin } from "@fal-works/s-l-t-r";
+import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
 import { getDistFilePath, BrowserDistType } from "../../distribution";
 
@@ -52,3 +52,10 @@ export const command = (config: Config): types.Command => {
 
   return seq(transpile, libAndTypes).hide();
 };
+
+/**
+ * Calls `command()` and then runs the command immediately.
+ * See README for required library dependencies.
+ */
+export const run = (config: Config): ReturnType<typeof runSltr> =>
+  runSltr(command(config));
