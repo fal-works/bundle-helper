@@ -29,6 +29,7 @@ const getRollupFormat = (distType: DistType) => {
 export interface RollupConfig extends BundleConfig, MiscConfig {
   srcEntryFileName: string;
   tsOutDir: string;
+  rollupAllowUnsafe?: boolean;
   rollupOptions?: {
     input?: rollupApi.InputOptions;
     output?: rollupApi.OutputOptions;
@@ -46,25 +47,30 @@ export const convertConfig = (
   distType: DistType
 ): Options => {
   const overrides = config.rollupOptions || {};
+  const allowUnsafe = config.rollupAllowUnsafe !== false;
 
   const inputFileName = config.srcEntryFileName.replace("ts", "js");
+  const baseInputOptions: rollupApi.InputOptions = {
+    input: `${config.tsOutDir}/${inputFileName}`,
+    external: config.external,
+    plugins: createPlugins(),
+    treeshake: allowUnsafe ? { propertyReadSideEffects: false } : undefined,
+  };
   const inputOptions: rollupApi.InputOptions = Object.assign(
-    {
-      input: `${config.tsOutDir}/${inputFileName}`,
-      external: config.external,
-      plugins: createPlugins(),
-    },
+    baseInputOptions,
     overrides.input
   );
 
+  const baseOutputOptions: rollupApi.OutputOptions = {
+    file: getDistFilePath(config, distType),
+    format: getRollupFormat(distType),
+    name: config.iifeVarName,
+    sourcemap: config.sourceMap,
+    banner: config.banner,
+    interop: allowUnsafe ? "default" : undefined,
+  };
   const outputOptions: rollupApi.OutputOptions = Object.assign(
-    {
-      file: getDistFilePath(config, distType),
-      format: getRollupFormat(distType),
-      name: config.iifeVarName,
-      sourcemap: config.sourceMap,
-      banner: config.banner,
-    },
+    baseOutputOptions,
     overrides.output
   );
 
