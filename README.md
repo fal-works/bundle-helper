@@ -49,6 +49,8 @@ In addition, each feature requires different modules, which you may have to inst
     - prettier
     - @fal-works/mere-file-transformer
     - replacestream
+  - glob/
+    - fast-glob
   - rollup/
     - rollup
     - @rollup/plugin-node-resolve
