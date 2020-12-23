@@ -1,6 +1,6 @@
 import { seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
-import { getDistFilePath, DistConfig, DistType } from "../../distribution";
+import { DistConfig } from "../../distribution";
 
 import * as ts from "../../use/typescript";
 import * as format from "../../use/format";
@@ -20,12 +20,12 @@ export const command = (config: Config): types.Command => {
   const { typesDir, distDir } = config;
 
   const cleanAll = typesDir
-    ? par(cleandir(distDir), cleandir(typesDir)).collapse()
+    ? par(cleandir(distDir), cleandir(typesDir)).collapse().rename("clean")
     : cleandir(distDir);
 
   const tsc = ts.command(config);
 
-  const formatLib = format.command(getDistFilePath(config, DistType.Cjs));
+  const formatLib = format.command(`${distDir}/**/*.js`);
 
   const formatAll = typesDir
     ? par(formatLib, format.command(`${typesDir}/**/*.d.ts`))
