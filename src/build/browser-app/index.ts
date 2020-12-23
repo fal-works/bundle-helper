@@ -1,6 +1,19 @@
-import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
+import {
+  run as runSltr,
+  seq,
+  par,
+  types,
+  builtin,
+  cmdEx,
+} from "@fal-works/s-l-t-r";
+import fs = require("fs");
 
-import { getDistFilePath, BrowserDistType } from "../../common";
+import {
+  getDistFilePath,
+  BrowserDistType,
+  createBanner,
+  getDistFilePaths,
+} from "../../common";
 
 import { TsConfig } from "../../use/typescript/options";
 import transpile = require("../../use/typescript/transpile-only-all");
@@ -15,7 +28,10 @@ export interface Config
     terser.TerserConfig {
   srcDir: string;
   minify?: boolean;
+  minifiedBannerContent?: string;
 }
+
+const { Iife } = BrowserDistType;
 
 const formatDistCommand = (config: Config) => (
   distType: BrowserDistType
@@ -26,14 +42,25 @@ const formatDistCommand = (config: Config) => (
 
 const { cleandir } = builtin;
 
+const createAddMinBanner = (config: Config, content: string) => {
+  const banner = createBanner(content);
+  const { minFilePath } = getDistFilePaths(config, Iife);
+  const execAddMinBanner = async () => {
+    const code = await fs.promises.readFile(minFilePath);
+    await fs.promises.writeFile(minFilePath, banner + code);
+  };
+  const addMinBanner = cmdEx(execAddMinBanner, "add .min banner");
+  return addMinBanner;
+};
+
 /**
  * Returns `Command` that does everything for building a module for browsers.
  * See README for required library dependencies.
  */
 export const command = (config: Config): types.Command => {
-  const { Iife } = BrowserDistType;
   const { tsOutDir, distDir } = config;
 
+  // prepare bundle --------------------------------
   const cleanTsOut = cleandir(tsOutDir);
   const { srcDir } = config;
   const emitTsOut = transpile.commandFromConfig(config)(Iife)(srcDir, tsOutDir);
@@ -44,11 +71,21 @@ export const command = (config: Config): types.Command => {
     .rename("transpile etc")
     .collapse();
 
+  // bundle etc. -----------------------------------
   const bundleCommands: types.Command[] = [];
   bundleCommands.push(rollup.commandFromConfig(config)(Iife));
   bundleCommands.push(formatDistCommand(config)(Iife));
-  if (config.minify !== false)
+  if (config.minify !== false) {
     bundleCommands.push(terser.commandFromConfig(config)(Iife));
+
+    if (config.minifiedBannerContent) {
+      const addMinBanner = createAddMinBanner(
+        config,
+        config.minifiedBannerContent
+      );
+      bundleCommands.push(addMinBanner);
+    }
+  }
   const bundleEtc = seq(...bundleCommands);
 
   return seq(prepareBundle, bundleEtc).hide();
