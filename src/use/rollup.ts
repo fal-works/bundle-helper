@@ -68,6 +68,13 @@ export const convertConfig = (
   };
 };
 
+type MaybeArray<T> = T | T[];
+
+/** Immediately runs `rollup.watch()`. */
+export const watch = (
+  config: MaybeArray<rollupApi.RollupWatchOptions>
+): rollupApi.RollupWatcher => rollupApi.watch(config);
+
 /** Immediately runs rollup. */
 export async function execute(
   inputOptions: rollupApi.InputOptions,
