@@ -51,9 +51,6 @@ export const convertConfig = (
     plugins,
   };
 
-  if (distType === DistType.Iife && !config.iifeVarName)
-    throw "Missing config property: iifeVarName";
-
   const outputOptions: rollupApi.OutputOptions = {
     file: getDistFilePath(config, distType),
     format: getRollupFormat(distType),
