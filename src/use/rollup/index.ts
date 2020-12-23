@@ -29,8 +29,10 @@ const getRollupFormat = (distType: DistType) => {
 export interface RollupConfig extends BundleConfig, MiscConfig {
   srcEntryFileName: string;
   tsOutDir: string;
-  iifeGlobals?: Record<string, string>;
-  rollupPlugins?: rollupApi.Plugin[];
+  rollupOptions?: {
+    input?: rollupApi.InputOptions;
+    output?: rollupApi.OutputOptions;
+  };
 }
 
 interface Options {
@@ -43,22 +45,28 @@ export const convertConfig = (
   config: RollupConfig,
   distType: DistType
 ): Options => {
-  const plugins = config.rollupPlugins ? config.rollupPlugins : createPlugins();
+  const overrides = config.rollupOptions || {};
 
-  const inputOptions: rollupApi.InputOptions = {
-    input: `${config.tsOutDir}/${config.srcEntryFileName.replace("ts", "js")}`,
-    external: config.external,
-    plugins,
-  };
+  const inputFileName = config.srcEntryFileName.replace("ts", "js");
+  const inputOptions: rollupApi.InputOptions = Object.assign(
+    {
+      input: `${config.tsOutDir}/${inputFileName}`,
+      external: config.external,
+      plugins: createPlugins(),
+    },
+    overrides.input
+  );
 
-  const outputOptions: rollupApi.OutputOptions = {
-    file: getDistFilePath(config, distType),
-    format: getRollupFormat(distType),
-    name: config.iifeVarName,
-    sourcemap: config.sourceMap,
-    banner: config.banner,
-    globals: distType === DistType.Iife ? config.iifeGlobals : undefined,
-  };
+  const outputOptions: rollupApi.OutputOptions = Object.assign(
+    {
+      file: getDistFilePath(config, distType),
+      format: getRollupFormat(distType),
+      name: config.iifeVarName,
+      sourcemap: config.sourceMap,
+      banner: config.banner,
+    },
+    overrides.output
+  );
 
   return {
     inputOptions,

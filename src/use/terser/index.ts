@@ -9,25 +9,36 @@ import {
   getDistEcmaVersionNumber,
 } from "../../common";
 
+export interface TerserConfig extends BundleDistConfig {
+  terserOptions?: terserApi.MinifyOptions;
+}
+
 interface Options {
   srcFilePath: string;
   destFilePath: string;
-  terserOptions: terserApi.MinifyOptions;
+  terserOptions?: terserApi.MinifyOptions;
 }
 
+type OptionsGenerator = (distType: BrowserDistType) => Options;
+
 /** @returns Options to be passed to `command()`. */
-export const convertConfig = (config: BundleDistConfig) => (
-  distType: BrowserDistType
-): Options => {
-  const { distFilePath, minFilePath } = getDistFilePaths(config, distType);
-  const terserOptions: terserApi.MinifyOptions = {
-    ecma: getDistEcmaVersionNumber(distType),
-    module: distType === BrowserDistType.Esm,
-  };
-  return {
-    srcFilePath: distFilePath,
-    destFilePath: minFilePath,
-    terserOptions,
+export const convertConfig = (config: TerserConfig): OptionsGenerator => {
+  const { terserOptions: overrides } = config;
+
+  return (distType) => {
+    const { distFilePath, minFilePath } = getDistFilePaths(config, distType);
+    const terserOptions: terserApi.MinifyOptions = Object.assign(
+      {
+        ecma: getDistEcmaVersionNumber(distType),
+        module: distType === BrowserDistType.Esm,
+      },
+      overrides
+    );
+    return {
+      srcFilePath: distFilePath,
+      destFilePath: minFilePath,
+      terserOptions,
+    };
   };
 };
 
@@ -54,7 +65,7 @@ export const command = (
   cmdEx(() => execute(srcFilePath, destFilePath, terserOptions), "terser");
 
 /** @returns `Command` object that runs terser. */
-export const commandFromConfig = (config: BundleDistConfig) => (
+export const commandFromConfig = (config: TerserConfig) => (
   distType: BrowserDistType
 ): types.Command => {
   const options = convertConfig(config)(distType);

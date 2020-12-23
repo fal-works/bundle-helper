@@ -8,7 +8,10 @@ import format = require("../../use/format");
 import terser = require("../../use/terser");
 
 /** Config fields required by `command()`. */
-export interface Config extends tsc.TscConfig, rollup.RollupConfig {
+export interface Config
+  extends tsc.TscConfig,
+    rollup.RollupConfig,
+    terser.TerserConfig {
   typesDir?: string;
 }
 
