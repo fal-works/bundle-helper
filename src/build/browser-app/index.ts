@@ -27,6 +27,7 @@ export interface Config
     rollup.RollupConfig,
     terser.TerserConfig {
   srcDir: string;
+  format?: boolean;
   minify?: boolean;
   minifiedBannerContent?: string;
 }
@@ -74,7 +75,8 @@ export const command = (config: Config): types.Command => {
   // bundle etc. -----------------------------------
   const bundleCommands: types.Command[] = [];
   bundleCommands.push(rollup.commandFromConfig(config)(Iife));
-  bundleCommands.push(formatDistCommand(config)(Iife));
+  if (config.format !== false)
+    bundleCommands.push(formatDistCommand(config)(Iife));
   if (config.minify !== false) {
     bundleCommands.push(terser.commandFromConfig(config)(Iife));
 
