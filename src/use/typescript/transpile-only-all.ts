@@ -6,12 +6,19 @@ import glob = require("../glob");
 import { convertConfig, TsConfig } from "./options";
 import transpile = require("./transpile-only");
 
+const tsToJs = (filePath: string) => {
+  const dotPos = filePath.lastIndexOf(".");
+  const withoutExtension = filePath.slice(0, dotPos);
+  const extension = filePath.slice(dotPos);
+  return withoutExtension + extension.replace("ts", "js");
+};
+
 const createTranspileFile = (
   srcDir: string,
   distDir: string,
   tsOptions: ts.TranspileOptions
 ) => (srcFile: string) => {
-  const distFile = srcFile.replace(srcDir, distDir);
+  const distFile = tsToJs(srcFile.replace(srcDir, distDir));
   return transpile.execute(srcFile, distFile, tsOptions);
 };
 
