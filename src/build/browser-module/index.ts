@@ -2,13 +2,13 @@ import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
 import { getDistFilePath, BrowserDistType } from "../../common";
 
-import * as ts from "../../use/typescript";
+import * as tsc from "../../use/typescript/tsc";
 import * as rollup from "../../use/rollup";
 import * as format from "../../use/format";
 import * as terser from "../../use/terser";
 
 /** Config fields required by `command()`. */
-export interface Config extends ts.TscConfig, rollup.RollupConfig {
+export interface Config extends tsc.TscConfig, rollup.RollupConfig {
   typesDir?: string;
 }
 
@@ -32,9 +32,8 @@ export const command = (config: Config): types.Command => {
   const cleanBeforeTsc = typesDir
     ? par(cleandir(tsOutDir), cleandir(typesDir)).collapse()
     : cleandir(tsOutDir);
-  const tsc = ts.tscCommand(config);
-  const transpileName = typesDir ? "ts -> js & d.ts" : "ts -> js";
-  const transpile = seq(cleanBeforeTsc, tsc).rename(transpileName).collapse();
+  const runTsc = tsc.command(config);
+  const transpile = seq(cleanBeforeTsc, runTsc).rename("tsc").collapse();
 
   const bundle = rollup.commandFromConfig(config);
   const formatLib = formatLibCommand(config);

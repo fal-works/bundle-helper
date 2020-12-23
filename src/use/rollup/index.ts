@@ -3,7 +3,12 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 import { cmdEx, types } from "@fal-works/s-l-t-r";
 
-import { DistType, getDistFilePath, BundleConfig, MiscConfig } from "../common";
+import {
+  DistType,
+  getDistFilePath,
+  BundleConfig,
+  MiscConfig,
+} from "../../common";
 
 const createPlugins = () => [nodeResolve()];
 

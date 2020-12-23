@@ -7,21 +7,7 @@ import {
   BundleDistConfig,
   getDistFilePaths,
   getDistEcmaVersionNumber,
-} from "../common";
-
-/** Immediately runs terser. */
-export const execute = async (
-  srcFilePath: string,
-  destFilePath: string,
-  terserOptions: terserApi.MinifyOptions = { ecma: 2015 }
-): Promise<void> => {
-  const inputCode = await fs.promises.readFile(srcFilePath);
-
-  const output = await terserApi.minify(inputCode.toString(), terserOptions);
-  if (!output.code) throw "terser failed to generate output code.";
-
-  return await fs.promises.writeFile(destFilePath, output.code);
-};
+} from "../../common";
 
 interface Options {
   srcFilePath: string;
@@ -43,6 +29,20 @@ export const convertConfig = (config: BundleDistConfig) => (
     destFilePath: minFilePath,
     terserOptions,
   };
+};
+
+/** Immediately runs terser. */
+export const execute = async (
+  srcFilePath: string,
+  destFilePath: string,
+  terserOptions: terserApi.MinifyOptions = { ecma: 2015 }
+): Promise<void> => {
+  const inputCode = await fs.promises.readFile(srcFilePath);
+
+  const output = await terserApi.minify(inputCode.toString(), terserOptions);
+  if (!output.code) throw "terser failed to generate output code.";
+
+  return await fs.promises.writeFile(destFilePath, output.code);
 };
 
 /** @returns `Command` object that runs terser. */

@@ -2,11 +2,11 @@ import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
 import { BundleDistConfig } from "../../common";
 
-import * as ts from "../../use/typescript";
+import * as tsc from "../../use/typescript/tsc";
 import * as format from "../../use/format";
 
 /** Config fields required by `command()`. */
-export interface Config extends BundleDistConfig, ts.TscConfig {
+export interface Config extends BundleDistConfig, tsc.TscConfig {
   typesDir?: string;
 }
 
@@ -23,7 +23,7 @@ export const command = (config: Config): types.Command => {
     ? par(cleandir(distDir), cleandir(typesDir)).collapse().rename("clean")
     : cleandir(distDir);
 
-  const tsc = ts.tscCommand(config);
+  const runTsc = tsc.command(config);
 
   const formatLib = format.command(`${distDir}/**/*.js`);
 
@@ -33,7 +33,7 @@ export const command = (config: Config): types.Command => {
         .collapse()
     : formatLib;
 
-  return seq(cleanAll, tsc, formatAll).hide();
+  return seq(cleanAll, runTsc, formatAll).hide();
 };
 
 /**

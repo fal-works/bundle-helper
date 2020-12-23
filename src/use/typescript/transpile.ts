@@ -1,5 +1,4 @@
-import { cmd, cmdEx, exec, types } from "@fal-works/s-l-t-r";
-import { Command } from "@fal-works/s-l-t-r/types/command/types";
+import { cmdEx, types } from "@fal-works/s-l-t-r";
 import * as fs from "fs";
 import * as ts from "typescript";
 
@@ -43,40 +42,8 @@ export const transpileCommand = (
   srcFilePath: string,
   distFilePath: string,
   transpileOptions: ts.TranspileOptions
-): Command =>
+): types.Command =>
   cmdEx(
     createExecuteTranspile(srcFilePath, distFilePath, transpileOptions),
     `ts.transpile ${srcFilePath}`
   );
-
-export interface TscConfig {
-  tscArgs?: string[];
-  tscAddRecommendedOptions?: boolean;
-}
-
-const recommendedTscOptions: readonly string[] = [
-  "--alwaysStrict",
-  "--skipLibCheck",
-  "--noStrictGenericChecks",
-  "--newLine lf",
-];
-
-/** Immediately runs `tsc`. */
-export const executeTsc = (
-  tscArgs: string[] = [],
-  addRecommendedOptions = true
-): Promise<void> => {
-  const options = tscArgs.concat(
-    addRecommendedOptions ? recommendedTscOptions : []
-  );
-  return exec("tsc", ...options);
-};
-
-/** @returns `Command` object that runs `tsc`. */
-export const tscCommand = (config: TscConfig): types.Command => {
-  const userOptions = config.tscArgs || [];
-  const recommended =
-    config.tscAddRecommendedOptions !== false ? recommendedTscOptions : [];
-  const name = ["tsc"].concat(userOptions).join(" ");
-  return cmd("tsc", ...userOptions.concat(recommended)).rename(name);
-};

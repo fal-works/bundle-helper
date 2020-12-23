@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import * as swc from "@swc/core";
-import { DistType, getDistEcmaVersion, MiscConfig } from "../common";
+import { DistType, getDistEcmaVersion, MiscConfig } from "../../common";
 import { cmdEx } from "@fal-works/s-l-t-r";
 import { Command } from "@fal-works/s-l-t-r/types/command/types";
 
