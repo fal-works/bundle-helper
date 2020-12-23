@@ -2,7 +2,12 @@ import * as terserApi from "terser";
 
 import * as fs from "fs";
 import { cmdEx, types } from "@fal-works/s-l-t-r";
-import { BrowserDistType, BundleDistConfig, getDistFilePaths } from "../common";
+import {
+  BrowserDistType,
+  BundleDistConfig,
+  getDistFilePaths,
+  getDistEcmaVersionNumber,
+} from "../common";
 
 /** Immediately runs terser. */
 export const execute = async (
@@ -30,7 +35,7 @@ export const convertConfig = (config: BundleDistConfig) => (
 ): Options => {
   const { distFilePath, minFilePath } = getDistFilePaths(config, distType);
   const terserOptions: terserApi.MinifyOptions = {
-    ecma: 2015,
+    ecma: getDistEcmaVersionNumber(distType),
     module: distType === BrowserDistType.Esm,
   };
   return {
