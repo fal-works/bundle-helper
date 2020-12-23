@@ -6,7 +6,7 @@ const sliceAfterLast = (s: string, delimiter: string): string =>
   s.slice(s.lastIndexOf(delimiter) + 1);
 const returnVoid = () => {};
 
-const createExecuteTranspile = (
+const createExecute = (
   srcFilePath: string,
   distFilePath: string,
   transpileOptions: ts.TranspileOptions
@@ -35,7 +35,7 @@ export const execute = (
   distFilePath: string,
   transpileOptions: ts.TranspileOptions
 ): Promise<void> =>
-  createExecuteTranspile(srcFilePath, distFilePath, transpileOptions)();
+  createExecute(srcFilePath, distFilePath, transpileOptions)();
 
 /** @returns `Command` that runs `ts.transpileModule()`. */
 export const command = (
@@ -44,6 +44,6 @@ export const command = (
   transpileOptions: ts.TranspileOptions
 ): types.Command =>
   cmdEx(
-    createExecuteTranspile(srcFilePath, distFilePath, transpileOptions),
+    createExecute(srcFilePath, distFilePath, transpileOptions),
     `ts.transpile ${srcFilePath}`
   );
