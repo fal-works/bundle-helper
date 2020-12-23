@@ -1,8 +1,8 @@
 import { seq } from "@fal-works/s-l-t-r";
 import { Command } from "@fal-works/s-l-t-r/types/command/types";
 
-import * as preFormat from "./pre-format";
-import * as prettier from "./prettier";
+import preFormat = require("./pre-format");
+import prettier = require("./prettier");
 
 /** Immediately runs `preFormat.execute()` and then `prettier.execute()`. */
 export const execute = async (

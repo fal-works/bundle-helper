@@ -2,8 +2,8 @@ import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
 import { BundleDistConfig } from "../../common";
 
-import * as tsc from "../../use/typescript/tsc";
-import * as format from "../../use/format";
+import tsc = require("../../use/typescript/tsc");
+import format = require("../../use/format");
 
 /** Config fields required by `command()`. */
 export interface Config extends BundleDistConfig, tsc.TscConfig {

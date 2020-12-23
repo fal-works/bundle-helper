@@ -1,4 +1,4 @@
-import * as rollupApi from "rollup";
+import rollupApi = require("rollup");
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 import { cmdEx, types } from "@fal-works/s-l-t-r";

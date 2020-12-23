@@ -2,10 +2,10 @@ import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
 import { getDistFilePath, BrowserDistType } from "../../common";
 
-import * as tsc from "../../use/typescript/tsc";
-import * as rollup from "../../use/rollup";
-import * as format from "../../use/format";
-import * as terser from "../../use/terser";
+import tsc = require("../../use/typescript/tsc");
+import rollup = require("../../use/rollup");
+import format = require("../../use/format");
+import terser = require("../../use/terser");
 
 /** Config fields required by `command()`. */
 export interface Config extends tsc.TscConfig, rollup.RollupConfig {

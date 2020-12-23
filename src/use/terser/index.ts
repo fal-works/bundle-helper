@@ -1,6 +1,6 @@
-import * as terserApi from "terser";
+import terserApi = require("terser");
 
-import * as fs from "fs";
+import fs = require("fs");
 import { cmdEx, types } from "@fal-works/s-l-t-r";
 import {
   BrowserDistType,

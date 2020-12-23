@@ -1,5 +1,5 @@
 import { transformFiles } from "@fal-works/mere-file-transformer";
-import * as replaceStream from "replacestream";
+import replaceStream = require("replacestream");
 import { cmdEx } from "@fal-works/s-l-t-r";
 import { Command } from "@fal-works/s-l-t-r/types/command/types";
 

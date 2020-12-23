@@ -1,4 +1,4 @@
-import * as esbuildApi from "esbuild";
+import esbuildApi = require("esbuild");
 import { cmdEx, types } from "@fal-works/s-l-t-r";
 import {
   BundleDistConfig,

@@ -1,5 +1,5 @@
 import { cmdEx, types } from "@fal-works/s-l-t-r";
-import * as glob from "fast-glob";
+import glob = require("fast-glob");
 import { Options } from "fast-glob";
 
 export type GlobOptions = Options;
