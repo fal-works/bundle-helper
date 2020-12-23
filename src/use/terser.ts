@@ -2,7 +2,7 @@ import * as terserApi from "terser";
 
 import * as fs from "fs";
 import { cmdEx, types } from "@fal-works/s-l-t-r";
-import { BrowserDistType, DistConfig, getDistFilePaths } from "../distribution";
+import { BrowserDistType, BundleDistConfig, getDistFilePaths } from "../common";
 
 /** Immediately runs terser. */
 export const execute = async (
@@ -25,7 +25,7 @@ interface Options {
 }
 
 /** @returns Options to be passed to `command()`. */
-export const convertConfig = (config: DistConfig) => (
+export const convertConfig = (config: BundleDistConfig) => (
   distType: BrowserDistType
 ): Options => {
   const { distFilePath, minFilePath } = getDistFilePaths(config, distType);
@@ -49,7 +49,7 @@ export const command = (
   cmdEx(() => execute(srcFilePath, destFilePath, terserOptions), "terser");
 
 /** @returns `Command` object that runs terser. */
-export const commandFromConfig = (config: DistConfig) => (
+export const commandFromConfig = (config: BundleDistConfig) => (
   distType: BrowserDistType
 ): types.Command => {
   const options = convertConfig(config)(distType);

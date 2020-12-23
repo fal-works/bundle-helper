@@ -1,6 +1,6 @@
 import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
-import { getDistFilePath, BrowserDistType } from "../../distribution";
+import { getDistFilePath, BrowserDistType } from "../../common";
 
 import * as ts from "../../use/typescript";
 import * as rollup from "../../use/rollup";

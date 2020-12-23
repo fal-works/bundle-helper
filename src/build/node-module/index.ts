@@ -1,12 +1,12 @@
 import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
-import { DistConfig } from "../../distribution";
+import { BundleDistConfig } from "../../common";
 
 import * as ts from "../../use/typescript";
 import * as format from "../../use/format";
 
 /** Config fields required by `command()`. */
-export interface Config extends DistConfig, ts.TscConfig {
+export interface Config extends BundleDistConfig, ts.TscConfig {
   typesDir?: string;
 }
 
