@@ -14,6 +14,7 @@ export interface Config
     rollup.RollupConfig,
     terser.TerserConfig {
   srcDir: string;
+  minify?: boolean;
 }
 
 const formatDistCommand = (config: Config) => (
@@ -39,15 +40,16 @@ export const command = (config: Config): types.Command => {
   const transpileDist = seq(cleanTsOut, emitTsOut)
     .rename("transpile")
     .collapse();
-
-  const bundle = rollup.commandFromConfig(config);
-  const formatDist = formatDistCommand(config);
-  const minify = terser.commandFromConfig(config);
-
   const prepareBundle = par(transpileDist, cleandir(distDir).hide())
     .rename("transpile etc")
     .collapse();
-  const bundleEtc = seq(bundle(Iife), formatDist(Iife), minify(Iife));
+
+  const bundleCommands: types.Command[] = [];
+  bundleCommands.push(rollup.commandFromConfig(config)(Iife));
+  bundleCommands.push(formatDistCommand(config)(Iife));
+  if (config.minify !== false)
+    bundleCommands.push(terser.commandFromConfig(config)(Iife));
+  const bundleEtc = seq(...bundleCommands);
 
   return seq(prepareBundle, bundleEtc).hide();
 };
