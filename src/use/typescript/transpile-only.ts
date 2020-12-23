@@ -7,7 +7,11 @@ import { ExecuteFunction, CommandFunction } from "./internal-types";
 
 const sliceAfterLast = (s: string, delimiter: string): string =>
   s.slice(s.lastIndexOf(delimiter) + 1);
+const sliceBeforeLast = (s: string, delimiter: string): string =>
+  s.slice(0, s.lastIndexOf(delimiter));
+
 const returnVoid = () => {};
+const mkdirOption = { recursive: true };
 
 const createExecute = (
   srcFilePath: string,
@@ -16,6 +20,9 @@ const createExecute = (
 ): (() => Promise<void>) => async () => {
   const srcData = (await fs.promises.readFile(srcFilePath)).toString();
   const result = ts.transpileModule(srcData, transpileOptions);
+
+  const distFileParentDir = sliceBeforeLast(distFilePath, "/");
+  await fs.promises.mkdir(distFileParentDir, mkdirOption);
 
   const saveCode = fs.promises.writeFile(distFilePath, result.outputText);
   if (!result.sourceMapText) return saveCode;
