@@ -4,7 +4,7 @@
  * https://fal-works.github.io/bundle-helper/
  * @copyright 2020 FAL
  * @license MIT
- * @version 0.1.0
+ * @version 0.2.0
  */
 
 "use strict";
