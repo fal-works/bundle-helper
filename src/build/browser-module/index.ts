@@ -6,7 +6,6 @@ import tsc = require("../../use/typescript/tsc");
 import rollup = require("../../use/rollup");
 import format = require("../../use/format");
 import terser = require("../../use/terser");
-import { Command } from "@fal-works/s-l-t-r/types/command/types";
 
 /** Config fields required by `command()`. */
 export interface Config
@@ -45,8 +44,8 @@ export const command = (config: Config): types.Command => {
   const formatLib = formatLibCommand(config);
   const minify = terser.commandFromConfig(config);
 
-  const createIife: Command[] = [bundle(Iife)];
-  const createEsm: Command[] = [bundle(Esm)];
+  const createIife: types.Command[] = [bundle(Iife)];
+  const createEsm: types.Command[] = [bundle(Esm)];
   if (config.format !== false) {
     createIife.push(formatLib(Iife));
     createEsm.push(formatLib(Esm));
