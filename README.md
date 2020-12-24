@@ -2,6 +2,8 @@
 
 Helps bundle using [s-l-t-r](https://github.com/fal-works/s-l-t-r).
 
+*Almost for personal use.*
+
 ## Usage
 
 You have to individually require each module you want.
