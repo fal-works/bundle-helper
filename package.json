@@ -39,14 +39,6 @@
   "keywords": [],
   "license": "MIT",
   "main": "lib/index.js",
-  "peerDependencies": {
-    "@rollup/plugin-node-resolve": "^11.0.1",
-    "@swc/core": "^1.2.40",
-    "esbuild": "^0.8.26",
-    "fast-glob": "^3.2.4",
-    "rollup": "^2.35.1",
-    "terser": "^5.5.1"
-  },
   "private": false,
   "repository": "https://github.com/fal-works/bundle-helper",
   "scripts": {
