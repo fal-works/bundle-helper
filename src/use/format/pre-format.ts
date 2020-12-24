@@ -3,7 +3,7 @@ import replaceStream = require("replacestream");
 import { cmdEx } from "@fal-works/s-l-t-r";
 import { Command } from "@fal-works/s-l-t-r/types/command/types";
 
-/** Prepares function for `execPreFormat()` and `preFormatCommand()`. */
+/** Prepares function for `execute()` and `command()`. */
 const createExecute = (filesPattern: string): (() => Promise<void>) => {
   const lineBeforeBlockComment = () =>
     replaceStream(/(.)(\n *\/\*\*)/gm, "$1\n$2");
@@ -15,7 +15,7 @@ const createExecute = (filesPattern: string): (() => Promise<void>) => {
 
 /**
  * Runs immediately pre-formatting.
- * @see `preFormatCommand()`
+ * @see `command()`
  */
 export const execute = (filesPattern: string): Promise<void> =>
   createExecute(filesPattern)();
