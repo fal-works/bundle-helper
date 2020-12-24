@@ -8,21 +8,26 @@ import {
 
 const returnVoid = () => {};
 
+export interface EsbuildMinifyConfig extends BundleDistConfig {
+  esbuildMinifyOptions?: esbuildApi.BuildOptions;
+}
+
 /** @returns Options to be passed to `commandFromConfig()`. */
-export const convertConfig = (config: BundleDistConfig) => (
+export const convertConfig = (config: EsbuildMinifyConfig) => (
   distType: BrowserDistType
 ): esbuildApi.BuildOptions => {
   const { distFilePath, minFilePath } = getDistFilePaths(config, distType);
 
-  return {
+  const baseOptions: esbuildApi.BuildOptions = {
     entryPoints: [distFilePath],
     outfile: minFilePath,
     minify: true,
   };
+  return Object.assign(baseOptions, config.esbuildMinifyOptions);
 };
 
 /** @returns `Command` that runs esbuild for minifying purpose. */
-export const commandFromConfig = (config: BundleDistConfig) => (
+export const commandFromConfig = (config: EsbuildMinifyConfig) => (
   distType: BrowserDistType
 ): types.Command => {
   const options = convertConfig(config)(distType);
