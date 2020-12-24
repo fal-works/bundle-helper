@@ -22,3 +22,5 @@ export const command = (
     return sltr.seq(runEsbuild, runPostProcess);
   };
 };
+
+export { esbuildOnly, postProcess };
