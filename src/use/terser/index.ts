@@ -8,6 +8,7 @@ import {
   getDistFilePaths,
   getDistEcmaVersionNumber,
 } from "../../common";
+import generalConfig = require("../../general-config/internal");
 
 export interface TerserConfig extends BundleDistConfig {
   terserOptions?: terserApi.MinifyOptions;
@@ -34,6 +35,12 @@ export const convertConfig = (config: TerserConfig): OptionsGenerator => {
       },
       overrides
     );
+
+    if (generalConfig.printsGeneratedOptions) {
+      console.log("Generated options for terser:");
+      console.log(terserOptions);
+    }
+
     return {
       srcFilePath: distFilePath,
       destFilePath: minFilePath,

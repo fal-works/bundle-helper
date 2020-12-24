@@ -7,6 +7,7 @@ import {
   getDistEcmaVersion,
   createBanners,
 } from "../../../common";
+import generalConfig = require("../../../general-config/internal");
 
 const returnVoid = () => {};
 
@@ -35,7 +36,14 @@ export const convertConfig = (config: EsbuildBundleConfig) => (
     entryPoints: [`${config.srcDir}/${config.srcEntryFileName}`],
     globalName: config.iifeVarName,
   };
-  return Object.assign(baseOptions, config.esbuildBundleOptions);
+  const options = Object.assign(baseOptions, config.esbuildBundleOptions);
+
+  if (generalConfig.printsGeneratedOptions) {
+    console.log("Generated options for bundle with esbuild:");
+    console.log(options);
+  }
+
+  return options;
 };
 
 /** @returns `Command` that runs esbuild for bundling purpose. */

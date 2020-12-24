@@ -1,5 +1,6 @@
 import ts = require("typescript");
 import { DistType } from "../../common";
+import generalConfig = require("../../general-config/internal");
 
 export interface TsConfig {
   tsCompilerOptions?: ts.CompilerOptions;
@@ -27,12 +28,19 @@ export const convertConfig = (
       break;
   }
 
-  const options: ts.CompilerOptions = {
+  const baseOptions: ts.CompilerOptions = {
     module: moduleKind,
     target,
     alwaysStrict: addRecommendedOptions ? true : undefined,
     newLine: addRecommendedOptions ? ts.NewLineKind.LineFeed : undefined,
   };
 
-  return Object.assign(options, config.tsCompilerOptions);
+  const options = Object.assign(baseOptions, config.tsCompilerOptions);
+
+  if (generalConfig.printsGeneratedOptions) {
+    console.log("Generated compiler options for typescript:");
+    console.log(options);
+  }
+
+  return options;
 };

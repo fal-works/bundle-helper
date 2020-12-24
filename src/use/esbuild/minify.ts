@@ -5,6 +5,7 @@ import {
   getDistFilePaths,
   BrowserDistType,
 } from "../../common";
+import generalConfig = require("../../general-config/internal");
 
 const returnVoid = () => {};
 
@@ -23,7 +24,14 @@ export const convertConfig = (config: EsbuildMinifyConfig) => (
     outfile: minFilePath,
     minify: true,
   };
-  return Object.assign(baseOptions, config.esbuildMinifyOptions);
+  const options = Object.assign(baseOptions, config.esbuildMinifyOptions);
+
+  if (generalConfig.printsGeneratedOptions) {
+    console.log("Generated options for minify with esbuild:");
+    console.log(options);
+  }
+
+  return options;
 };
 
 /** @returns `Command` that runs esbuild for minifying purpose. */

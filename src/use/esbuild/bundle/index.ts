@@ -18,7 +18,6 @@ export const command = (
     if (!external) return runEsbuild;
     const distFilePath = common.getDistFilePath(config, distType);
     const runPostProcess = postProcess.command(distFilePath, external);
-    console.log("dist file: " + distFilePath);
 
     return sltr.seq(runEsbuild, runPostProcess);
   };

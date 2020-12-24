@@ -10,6 +10,7 @@ import {
   MiscConfig,
   createBanners,
 } from "../../common";
+import generalConfig = require("../../general-config/internal");
 
 const createPlugins = () => [nodeResolve()];
 
@@ -77,6 +78,13 @@ export const convertConfig = (
     baseOutputOptions,
     overrides.output
   );
+
+  if (generalConfig.printsGeneratedOptions) {
+    console.log("Generated input options for rollup:");
+    console.log(inputOptions);
+    console.log("Generated output options for rollup:");
+    console.log(outputOptions);
+  }
 
   return {
     inputOptions,
