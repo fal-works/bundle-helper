@@ -30,52 +30,47 @@ const build = builder.command({
 
 ## Dependencies
 
-`@fal-works/s-l-t-r` is mandatory and is installed automatically.
+The below are mandatory and automatically installed as they will be required in most cases:
 
-In addition, each feature requires different modules, which you may have to install manually:
+- `@fal-works/s-l-t-r`
+- `@fal-works/mere-file-transformer`
+- `@types/replacestream`
+- `prettier`
+- `replacestream`
+- `typescript`
+
+In addition, some features require other modules as well, which you may have to install manually:
 
 - build/
   - browser-app/
-    - typescript
-    - rollup
-    - prettier
-    - @fal-works/mere-file-transformer
-    - replacestream
-    - terser
-    - fast-glob
+    - `rollup`
+    - `@rollup/plugin-node-resolve`
+    - `terser`
+    - `fast-glob`
   - browser-module/
-    - typescript
-    - rollup
-    - prettier
-    - @fal-works/mere-file-transformer
-    - replacestream
-    - terser
+    - `rollup`
+    - `@rollup/plugin-node-resolve`
+    - `terser`
   - node-module/
-    - typescript
-    - prettier
-    - @fal-works/mere-file-transformer
-    - replacestream
+    - \-
 - use/
   - esbuild/
-    - esbuild
+    - `esbuild`
   - format/
-    - prettier
-    - @fal-works/mere-file-transformer
-    - replacestream
+    - \-
   - glob/
-    - fast-glob
+    - `fast-glob`
   - rollup/
-    - rollup
-    - @rollup/plugin-node-resolve
+    - `rollup`
+    - `@rollup/plugin-node-resolve`
   - swc/
-    - @swc/core
+    - `@swc/core`
   - terser/
-    - terser
+    - `terser`
   - typescript/
     - tsc/
-      - typescript
+      - \-
     - transpile-only/
-      - typescript
+      - \-
     - transpile-only-all/
-      - typescript
-      - fast-glob
+      - `fast-glob`
