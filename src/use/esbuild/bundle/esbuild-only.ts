@@ -6,11 +6,12 @@ import {
   BrowserDistType,
   getDistEcmaVersion,
   createBanners,
-} from "../../common";
+} from "../../../common";
 
 const returnVoid = () => {};
 
 export interface EsbuildBundleConfig extends BundleConfig {
+  srcDir: string;
   esbuildBundleOptions?: esbuildApi.BuildOptions;
 }
 
@@ -31,14 +32,14 @@ export const convertConfig = (config: EsbuildBundleConfig) => (
     outfile: distFilePath,
     platform: "browser",
     external: config.external,
-    entryPoints: [distFilePath],
+    entryPoints: [`${config.srcDir}/${config.srcEntryFileName}`],
     globalName: config.iifeVarName,
   };
   return Object.assign(baseOptions, config.esbuildBundleOptions);
 };
 
 /** @returns `Command` that runs esbuild for bundling purpose. */
-export const commandFromConfig = (config: EsbuildBundleConfig) => (
+export const command = (config: EsbuildBundleConfig) => (
   distType: BrowserDistType
 ): types.Command => {
   const options = convertConfig(config)(distType);

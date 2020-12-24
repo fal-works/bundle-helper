@@ -17,6 +17,7 @@ export interface BundleDistConfig extends DistConfig {
  * Common config fields required for bundling.
  */
 export interface BundleConfig extends BundleDistConfig {
+  srcEntryFileName: string;
   iifeVarName?: string;
   bannerContent?: string | string[];
   external?: string[];

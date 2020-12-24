@@ -28,7 +28,6 @@ const getRollupFormat = (distType: DistType) => {
 
 /** Config fields required by `commandFromConfig()`. */
 export interface RollupConfig extends BundleConfig, MiscConfig {
-  srcEntryFileName: string;
   tsOutDir: string;
   rollupAllowUnsafe?: boolean;
   rollupOptions?: {
