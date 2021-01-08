@@ -1,13 +1,8 @@
 import { cmdEx, types } from "@fal-works/s-l-t-r";
 import fs = require("fs");
 import ts = require("typescript");
-import { DistType } from "../../common";
+import { DistType, sliceAfterLast, sliceBeforeLast } from "../../common";
 import { convertConfig, TsConfig } from "./options";
-
-const sliceAfterLast = (s: string, delimiter: string): string =>
-  s.slice(s.lastIndexOf(delimiter) + 1);
-const sliceBeforeLast = (s: string, delimiter: string): string =>
-  s.slice(0, s.lastIndexOf(delimiter));
 
 const returnVoid = () => {};
 const mkdirOption = { recursive: true };

@@ -1,7 +1,12 @@
 import fs = require("fs");
 
 import swc = require("@swc/core");
-import { DistType, getDistEcmaVersion, MiscConfig } from "../../common";
+import {
+  DistType,
+  getDistEcmaVersion,
+  MiscConfig,
+  sliceAfterLast,
+} from "../../common";
 import { cmdEx } from "@fal-works/s-l-t-r";
 import { Command } from "@fal-works/s-l-t-r/types/command/types";
 
@@ -11,9 +16,6 @@ type OptionGenerator = (
   distType: DistType,
   loose?: boolean
 ) => (filePath: string) => swc.Options;
-
-const sliceAfterLast = (s: string, delimiter: string): string =>
-  s.slice(s.lastIndexOf(delimiter) + 1);
 
 /**
  * Prepares options to be passed to
