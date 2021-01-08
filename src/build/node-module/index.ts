@@ -1,12 +1,12 @@
 import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
 
-import { BundleDistConfig } from "../../common";
+import { DistConfig } from "../../common";
 
 import tsc = require("../../use/typescript/tsc");
 import format = require("../../use/format");
 
 /** Config fields required by `command()`. */
-export interface NodeModuleConfig extends BundleDistConfig, tsc.TscConfig {
+export interface NodeModuleConfig extends DistConfig, tsc.TscConfig {
   typesDir?: string;
   format?: boolean;
 }
