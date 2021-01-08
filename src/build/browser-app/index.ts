@@ -26,6 +26,7 @@ export interface BrowserAppConfig
 
 const { Iife } = common.BrowserDistType;
 
+/** Creates `Command` that formats dist files. */
 const formatDistCommand = (config: BrowserAppConfig) => (
   distType: common.BrowserDistType
 ): types.Command => {
@@ -33,6 +34,7 @@ const formatDistCommand = (config: BrowserAppConfig) => (
   return format.command(path);
 };
 
+/** Creates `Command` that adds banner to the min file. */
 const createAddMinBanner = (config: BrowserAppConfig, content: string) => {
   const banner = common.createBanner(content);
   const { minFilePath } = common.getDistFilePaths(config, Iife);

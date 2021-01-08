@@ -21,6 +21,7 @@ export interface BrowserModuleConfig
   minify?: boolean;
 }
 
+/** Creates `Command` that formats lib files. */
 const formatLibCommand = (config: BrowserModuleConfig) => (
   distType: common.BrowserDistType
 ): types.Command => {
