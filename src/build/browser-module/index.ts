@@ -1,11 +1,15 @@
-import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
+import sltr = require("@fal-works/s-l-t-r");
 
-import { getDistFilePath, BrowserDistType } from "../../common";
-
+import common = require("../../common");
 import tsc = require("../../use/typescript/tsc");
 import rollup = require("../../use/rollup");
 import format = require("../../use/format");
 import terser = require("../../use/terser");
+
+import type { types } from "@fal-works/s-l-t-r";
+
+const { seq, par } = sltr;
+const { cleandir } = sltr.builtin;
 
 /** Config fields required by `command()`. */
 export interface BrowserModuleConfig
@@ -18,20 +22,18 @@ export interface BrowserModuleConfig
 }
 
 const formatLibCommand = (config: BrowserModuleConfig) => (
-  distType: BrowserDistType
+  distType: common.BrowserDistType
 ): types.Command => {
-  const path = getDistFilePath(config, distType);
+  const path = common.getDistFilePath(config, distType);
   return format.command(path);
 };
-
-const { cleandir } = builtin;
 
 /**
  * Returns `Command` that does everything for building a module for browsers.
  * See README for required library dependencies.
  */
 export const command = (config: BrowserModuleConfig): types.Command => {
-  const { Iife, Esm } = BrowserDistType;
+  const { Iife, Esm } = common.BrowserDistType;
   const { tsOutDir, distDir } = config;
   const typesDir = config.typesDir || distDir;
 
@@ -74,5 +76,5 @@ export const command = (config: BrowserModuleConfig): types.Command => {
  * Calls `command()` and then runs the command immediately.
  * See README for required library dependencies.
  */
-export const run = (config: BrowserModuleConfig): ReturnType<typeof runSltr> =>
-  runSltr(command(config));
+export const run = (config: BrowserModuleConfig): ReturnType<typeof sltr.run> =>
+  sltr.run(command(config));

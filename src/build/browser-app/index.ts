@@ -1,25 +1,17 @@
-import {
-  run as runSltr,
-  seq,
-  par,
-  types,
-  builtin,
-  cmdEx,
-} from "@fal-works/s-l-t-r";
 import fs = require("fs");
+import sltr = require("@fal-works/s-l-t-r");
 
-import {
-  getDistFilePath,
-  BrowserDistType,
-  createBanner,
-  getDistFilePaths,
-} from "../../common";
-
-import { TsConfig } from "../../use/typescript/options";
+import common = require("../../common");
 import transpile = require("../../use/typescript/transpile-only-all");
 import rollup = require("../../use/rollup");
 import format = require("../../use/format");
 import terser = require("../../use/terser");
+
+import type { TsConfig } from "../../use/typescript/options";
+import type { types } from "@fal-works/s-l-t-r";
+
+const { seq, par, cmdEx } = sltr;
+const { cleandir } = sltr.builtin;
 
 /** Config fields required by `command()`. */
 export interface BrowserAppConfig
@@ -32,20 +24,18 @@ export interface BrowserAppConfig
   minifiedBannerContent?: string;
 }
 
-const { Iife } = BrowserDistType;
+const { Iife } = common.BrowserDistType;
 
 const formatDistCommand = (config: BrowserAppConfig) => (
-  distType: BrowserDistType
+  distType: common.BrowserDistType
 ): types.Command => {
-  const path = getDistFilePath(config, distType);
+  const path = common.getDistFilePath(config, distType);
   return format.command(path);
 };
 
-const { cleandir } = builtin;
-
 const createAddMinBanner = (config: BrowserAppConfig, content: string) => {
-  const banner = createBanner(content);
-  const { minFilePath } = getDistFilePaths(config, Iife);
+  const banner = common.createBanner(content);
+  const { minFilePath } = common.getDistFilePaths(config, Iife);
   const execAddMinBanner = async () => {
     const code = await fs.promises.readFile(minFilePath);
     await fs.promises.writeFile(minFilePath, banner + code);
@@ -58,7 +48,7 @@ const createAddMinBanner = (config: BrowserAppConfig, content: string) => {
  * Returns `Command` that does everything for building a module for browsers.
  * See README for required library dependencies.
  */
-export const command = (config: BrowserAppConfig): types.Command => {
+export const command = (config: BrowserAppConfig): sltr.types.Command => {
   const { tsOutDir, distDir } = config;
 
   // prepare bundle --------------------------------
@@ -97,5 +87,5 @@ export const command = (config: BrowserAppConfig): types.Command => {
  * Calls `command()` and then runs the command immediately.
  * See README for required library dependencies.
  */
-export const run = (config: BrowserAppConfig): ReturnType<typeof runSltr> =>
-  runSltr(command(config));
+export const run = (config: BrowserAppConfig): ReturnType<typeof sltr.run> =>
+  sltr.run(command(config));

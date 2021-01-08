@@ -1,17 +1,19 @@
-import { run as runSltr, seq, par, types, builtin } from "@fal-works/s-l-t-r";
-
-import { DistConfig } from "../../common";
+import sltr = require("@fal-works/s-l-t-r");
 
 import tsc = require("../../use/typescript/tsc");
 import format = require("../../use/format");
+
+import type { DistConfig } from "../../common";
+import type { types } from "@fal-works/s-l-t-r";
+
+const { seq, par } = sltr;
+const { cleandir } = sltr.builtin;
 
 /** Config fields required by `command()`. */
 export interface NodeModuleConfig extends DistConfig, tsc.TscConfig {
   typesDir?: string;
   format?: boolean;
 }
-
-const { cleandir } = builtin;
 
 /**
  * Returns `Command` that does everything for building a Node.js module.
@@ -50,5 +52,5 @@ export const command = (config: NodeModuleConfig): types.Command => {
  * Calls `command()` and then runs the command immediately.
  * See README for required library dependencies.
  */
-export const run = (config: NodeModuleConfig): ReturnType<typeof runSltr> =>
-  runSltr(command(config));
+export const run = (config: NodeModuleConfig): ReturnType<typeof sltr.run> =>
+  sltr.run(command(config));
