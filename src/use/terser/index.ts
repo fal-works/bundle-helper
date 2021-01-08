@@ -7,6 +7,7 @@ import {
   BundleDistConfig,
   getDistFilePaths,
   getDistEcmaVersionNumber,
+  sliceAfterLast,
 } from "../../common";
 import generalConfig = require("../../general-config/internal");
 
@@ -22,19 +23,20 @@ interface Options {
 
 type OptionsGenerator = (distType: BrowserDistType) => Options;
 
+const returnVoid = () => {};
+
 /** @returns Options to be passed to `command()`. */
 export const convertConfig = (config: TerserConfig): OptionsGenerator => {
   const { terserOptions: overrides } = config;
 
   return (distType) => {
     const { distFilePath, minFilePath } = getDistFilePaths(config, distType);
-    const terserOptions: terserApi.MinifyOptions = Object.assign(
-      {
-        ecma: getDistEcmaVersionNumber(distType),
-        module: distType === BrowserDistType.Esm,
-      },
-      overrides
-    );
+    const terserOptions: terserApi.MinifyOptions = {
+      ecma: getDistEcmaVersionNumber(distType),
+      module: distType === BrowserDistType.Esm,
+      sourceMap: true,
+    };
+    Object.assign(terserOptions, overrides);
 
     if (generalConfig.printsGeneratedOptions) {
       console.log("Generated options for terser:");
@@ -60,7 +62,20 @@ export const execute = async (
   const output = await terserApi.minify(inputCode.toString(), terserOptions);
   if (!output.code) throw "terser failed to generate output code.";
 
-  return await fs.promises.writeFile(destFilePath, output.code);
+  const saveCode = fs.promises.writeFile(destFilePath, output.code);
+
+  if (!output.map) return saveCode;
+
+  const mapPath = destFilePath + ".map";
+  const mapFileName = sliceAfterLast(mapPath, "/");
+  const saveMap = fs.promises.writeFile(mapPath, output.map.toString());
+  const appendMapPath = () =>
+    fs.promises.appendFile(
+      destFilePath,
+      `\n//# sourceMappingURL=${mapFileName}\n`
+    );
+
+  return Promise.all([saveCode.then(appendMapPath), saveMap]).then(returnVoid);
 };
 
 /** @returns `Command` object that runs terser. */
