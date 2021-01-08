@@ -1,7 +1,7 @@
 {
   "name": "@fal-works/bundle-helper",
   "description": "Helps bundle using s-l-t-r.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "author": "FAL",
   "keywords": [],
