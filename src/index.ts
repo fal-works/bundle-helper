@@ -9,7 +9,8 @@
 
 "use strict";
 
-export * as types from "./types";
+import type * as types from "./types";
+export { types };
 
 const log = (s: string) => console.log(s);
 
