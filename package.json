@@ -2,9 +2,21 @@
   "name": "@fal-works/bundle-helper",
   "description": "Helps bundle using s-l-t-r.",
   "version": "0.3.0",
+  "license": "MIT",
   "author": "FAL",
+  "keywords": [],
+  "homepage": "https://github.com/fal-works/bundle-helper#readme",
   "bugs": {
     "url": "https://github.com/fal-works/bundle-helper/issues"
+  },
+  "files": [
+    "lib",
+    "types"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
   },
   "dependencies": {
     "@fal-works/mere-file-transformer": "^0.1.1",
@@ -28,22 +40,9 @@
     "rollup": "^2.35.1",
     "terser": "^5.5.1"
   },
-  "directories": {
-    "lib": "lib"
-  },
-  "files": [
-    "lib",
-    "types"
-  ],
-  "homepage": "https://github.com/fal-works/bundle-helper#readme",
-  "keywords": [],
-  "license": "MIT",
-  "main": "lib/index.js",
-  "private": false,
   "repository": "https://github.com/fal-works/bundle-helper",
   "scripts": {
     "build": "node build.js",
     "dogfood": "node test/dogfooding.js"
-  },
-  "types": "lib/index.d.ts"
+  }
 }
