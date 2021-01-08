@@ -7,8 +7,13 @@ import { Command } from "@fal-works/s-l-t-r/types/command/types";
 const createExecute = (filesPattern: string): (() => Promise<void>) => {
   const lineBeforeBlockComment = () =>
     replaceStream(/(.)(\n *\/\*\*)/gm, "$1\n$2");
+  const lineBeforeSourceMapComment = () =>
+    replaceStream(/(.)(\n *\/\/#)/gm, "$1\n$2");
 
-  const preFormatFiles = transformFiles(lineBeforeBlockComment);
+  const preFormatFiles = transformFiles([
+    lineBeforeBlockComment,
+    lineBeforeSourceMapComment,
+  ]);
 
   return () => preFormatFiles(filesPattern);
 };
