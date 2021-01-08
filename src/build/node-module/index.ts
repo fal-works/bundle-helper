@@ -19,7 +19,7 @@ const { cleandir } = builtin;
  */
 export const command = (config: NodeModuleConfig): types.Command => {
   const { distDir } = config;
-  const typesDir = config.typesDir === distDir ? config.typesDir : undefined;
+  const typesDir = config.typesDir || distDir;
 
   const cleanAll = typesDir
     ? par(cleandir(distDir), cleandir(typesDir)).collapse().rename("clean")
@@ -30,13 +30,17 @@ export const command = (config: NodeModuleConfig): types.Command => {
   const all: types.Command[] = [cleanAll, runTsc];
 
   if (config.format !== false) {
-    const formatLib = format.command(`${distDir}/**/*.js`);
-    const formatAll = typesDir
-      ? par(formatLib, format.command(`${typesDir}/**/*.d.ts`))
-          .rename("format js & d.ts")
-          .collapse()
-      : formatLib;
-    all.push(formatAll);
+    if (typesDir === distDir) {
+      const formatAll = format.command(`${distDir}/**/*.{js,d.ts}`);
+      all.push(formatAll);
+    } else {
+      const formatLib = format.command(`${distDir}/**/*.js`);
+      const formatTypes = format.command(`${typesDir}/**/*.d.ts`);
+      const formatAll = par(formatLib, formatTypes)
+        .rename("format js & d.ts")
+        .collapse();
+      all.push(formatAll);
+    }
   }
 
   return seq(...all).hide();

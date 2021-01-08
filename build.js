@@ -12,7 +12,7 @@ const clean = cleandir(distDir).rename("clean");
 
 const tsc = cmd("tsc", "--skipLibCheck");
 
-const format = cmd("eslint", "--fix", `${distDir}/**/*.{js, d.ts}`)
+const format = cmd("eslint", "--fix", `${distDir}/**/*.{js,d.ts}`)
   .rename("format js & d.ts")
   .collapse();
 

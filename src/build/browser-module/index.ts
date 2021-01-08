@@ -33,11 +33,12 @@ const { cleandir } = builtin;
 export const command = (config: BrowserModuleConfig): types.Command => {
   const { Iife, Esm } = BrowserDistType;
   const { tsOutDir, distDir } = config;
-  const typesDir = config.typesDir === distDir ? config.typesDir : undefined;
+  const typesDir = config.typesDir || distDir;
 
-  const cleanBeforeTsc = typesDir
-    ? par(cleandir(tsOutDir), cleandir(typesDir)).collapse()
-    : cleandir(tsOutDir);
+  const cleanBeforeTsc =
+    typesDir !== distDir
+      ? par(cleandir(tsOutDir), cleandir(typesDir)).collapse()
+      : cleandir(tsOutDir);
   const runTsc = tsc.command(config);
   const transpile = seq(cleanBeforeTsc, runTsc).rename("tsc").collapse();
 
@@ -62,7 +63,7 @@ export const command = (config: BrowserModuleConfig): types.Command => {
   const lib = seq(cleandir(distDir), createLib).rename("lib").collapse();
 
   const libAndTypes =
-    typesDir && config.format !== false
+    config.format !== false
       ? par(format.command(`${typesDir}/**/*.d.ts`), lib)
       : lib;
 

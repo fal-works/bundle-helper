@@ -7,5 +7,4 @@ const builder = require("../lib/build/node-module");
 
 builder.run({
   distDir: "lib",
-  typesDir: "types",
 });
