@@ -3,7 +3,6 @@
     "declaration": true,
     "declarationDir": "./lib",
     "declarationMap": true,
-    "sourceMap": true,
     "target": "esnext",
     "module": "CommonJS",
     "noEmitOnError": true,
