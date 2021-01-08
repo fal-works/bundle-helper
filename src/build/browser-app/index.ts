@@ -22,7 +22,7 @@ import format = require("../../use/format");
 import terser = require("../../use/terser");
 
 /** Config fields required by `command()`. */
-export interface Config
+export interface BrowserAppConfig
   extends TsConfig,
     rollup.RollupConfig,
     terser.TerserConfig {
@@ -34,7 +34,7 @@ export interface Config
 
 const { Iife } = BrowserDistType;
 
-const formatDistCommand = (config: Config) => (
+const formatDistCommand = (config: BrowserAppConfig) => (
   distType: BrowserDistType
 ): types.Command => {
   const path = getDistFilePath(config, distType);
@@ -43,7 +43,7 @@ const formatDistCommand = (config: Config) => (
 
 const { cleandir } = builtin;
 
-const createAddMinBanner = (config: Config, content: string) => {
+const createAddMinBanner = (config: BrowserAppConfig, content: string) => {
   const banner = createBanner(content);
   const { minFilePath } = getDistFilePaths(config, Iife);
   const execAddMinBanner = async () => {
@@ -58,7 +58,7 @@ const createAddMinBanner = (config: Config, content: string) => {
  * Returns `Command` that does everything for building a module for browsers.
  * See README for required library dependencies.
  */
-export const command = (config: Config): types.Command => {
+export const command = (config: BrowserAppConfig): types.Command => {
   const { tsOutDir, distDir } = config;
 
   // prepare bundle --------------------------------
@@ -97,5 +97,5 @@ export const command = (config: Config): types.Command => {
  * Calls `command()` and then runs the command immediately.
  * See README for required library dependencies.
  */
-export const run = (config: Config): ReturnType<typeof runSltr> =>
+export const run = (config: BrowserAppConfig): ReturnType<typeof runSltr> =>
   runSltr(command(config));

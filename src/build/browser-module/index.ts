@@ -8,7 +8,7 @@ import format = require("../../use/format");
 import terser = require("../../use/terser");
 
 /** Config fields required by `command()`. */
-export interface Config
+export interface BrowserModuleConfig
   extends tsc.TscConfig,
     rollup.RollupConfig,
     terser.TerserConfig {
@@ -17,7 +17,7 @@ export interface Config
   minify?: boolean;
 }
 
-const formatLibCommand = (config: Config) => (
+const formatLibCommand = (config: BrowserModuleConfig) => (
   distType: BrowserDistType
 ): types.Command => {
   const path = getDistFilePath(config, distType);
@@ -30,7 +30,7 @@ const { cleandir } = builtin;
  * Returns `Command` that does everything for building a module for browsers.
  * See README for required library dependencies.
  */
-export const command = (config: Config): types.Command => {
+export const command = (config: BrowserModuleConfig): types.Command => {
   const { Iife, Esm } = BrowserDistType;
   const { typesDir, tsOutDir, distDir } = config;
 
@@ -72,5 +72,5 @@ export const command = (config: Config): types.Command => {
  * Calls `command()` and then runs the command immediately.
  * See README for required library dependencies.
  */
-export const run = (config: Config): ReturnType<typeof runSltr> =>
+export const run = (config: BrowserModuleConfig): ReturnType<typeof runSltr> =>
   runSltr(command(config));

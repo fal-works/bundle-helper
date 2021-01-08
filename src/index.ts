@@ -9,6 +9,8 @@
 
 "use strict";
 
+export * as types from "./types";
+
 const log = (s: string) => console.log(s);
 
 console.group("\n[bundle-helper]");

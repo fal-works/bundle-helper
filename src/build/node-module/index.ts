@@ -6,7 +6,7 @@ import tsc = require("../../use/typescript/tsc");
 import format = require("../../use/format");
 
 /** Config fields required by `command()`. */
-export interface Config extends BundleDistConfig, tsc.TscConfig {
+export interface NodeModuleConfig extends BundleDistConfig, tsc.TscConfig {
   typesDir?: string;
   format?: boolean;
 }
@@ -17,7 +17,7 @@ const { cleandir } = builtin;
  * Returns `Command` that does everything for building a Node.js module.
  * See README for required library dependencies.
  */
-export const command = (config: Config): types.Command => {
+export const command = (config: NodeModuleConfig): types.Command => {
   const { typesDir, distDir } = config;
 
   const cleanAll = typesDir
@@ -45,5 +45,5 @@ export const command = (config: Config): types.Command => {
  * Calls `command()` and then runs the command immediately.
  * See README for required library dependencies.
  */
-export const run = (config: Config): ReturnType<typeof runSltr> =>
+export const run = (config: NodeModuleConfig): ReturnType<typeof runSltr> =>
   runSltr(command(config));

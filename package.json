@@ -45,5 +45,5 @@
     "build": "node build.js",
     "dogfood": "node test/dogfooding.js"
   },
-  "types": "types/index.d.ts"
+  "types": "lib/index.d.ts"
 }
