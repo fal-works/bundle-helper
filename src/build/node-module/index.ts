@@ -18,7 +18,8 @@ const { cleandir } = builtin;
  * See README for required library dependencies.
  */
 export const command = (config: NodeModuleConfig): types.Command => {
-  const { typesDir, distDir } = config;
+  const { distDir } = config;
+  const typesDir = config.typesDir === distDir ? config.typesDir : undefined;
 
   const cleanAll = typesDir
     ? par(cleandir(distDir), cleandir(typesDir)).collapse().rename("clean")

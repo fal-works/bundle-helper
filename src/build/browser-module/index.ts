@@ -32,7 +32,8 @@ const { cleandir } = builtin;
  */
 export const command = (config: BrowserModuleConfig): types.Command => {
   const { Iife, Esm } = BrowserDistType;
-  const { typesDir, tsOutDir, distDir } = config;
+  const { tsOutDir, distDir } = config;
+  const typesDir = config.typesDir === distDir ? config.typesDir : undefined;
 
   const cleanBeforeTsc = typesDir
     ? par(cleandir(tsOutDir), cleandir(typesDir)).collapse()
